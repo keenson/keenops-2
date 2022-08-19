@@ -2,7 +2,7 @@
 
 # Continuous Integration
 
-name: Python application
+name: Run test
 
 on:
   push:

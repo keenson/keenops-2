@@ -44,9 +44,6 @@ jobs:
         docker push -a $REGISTRY/$REPOSITORY
 
 
-    - name: Update kube config
-      run: aws eks update-kubeconfig --name devops-keenson --region us-west-2 
-
 
     - name: Deploy image to Amazon EKS
       run: |

@@ -7,13 +7,19 @@ on:
 
 
 jobs:
-  build:
+  deploy:
 
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2 
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'v1.25.1'
+      id: install      
 
 
     - name: Configure AWS credentials
@@ -34,5 +40,22 @@ jobs:
         REPOSITORY: dockerize
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest .
+        docker push -a $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name dockerize --region us-east-1 
+
+
+    - name: Deploy image to Amazon EKS
+      run: |
+        kubectl apply -f eks/deployment.yaml
+        kubectl apply -f eks/service.yaml
+
+
+
+
+
+
+

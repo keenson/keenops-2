@@ -18,4 +18,4 @@ spec:
         - name: back-end
           image: 872898460552.dkr.ecr.us-east-1.amazonaws.com/dockerize:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080

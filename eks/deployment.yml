@@ -2,20 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-demo
-  namespace: default
+  name: dockerized-api-deployment
+  labels:
+        app: dockerized-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web
+      app: dockerized-api
   template:
     metadata:
       labels:
-        app: web
+        app: dockerized-api
     spec:
       containers:
-        - name: back-end
+        - name: dockerized-api
           image: 872898460552.dkr.ecr.us-east-1.amazonaws.com/dockerize:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
